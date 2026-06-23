@@ -1,1107 +1,1049 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="iOS 27 changed how Siri works. Most people have no idea. This guide shows you exactly how to set it up so Siri remembers everything — names, codes, details — and recalls it when you ask.">
-  <title>Remember — Your iPhone Can Remember Things For You</title>
-
-  <!-- Preconnect for fonts -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Remember — Outsource your mom-brain. Finally.</title>
+  <meta name="description" content="A $37 guide that turns iOS Siri into your hands-free personal memory assistant. Never forget a name, date, or detail again.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <style>
-    /* ===========================
-       CSS CUSTOM PROPERTIES
-    =========================== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
     :root {
-      --bg: #FAF8F4;
-      --surface: #FFFFFF;
-      --accent: #4A7C59;
-      --accent-hover: #3A6249;
-      --headline: #1A1A1A;
-      --body: #3D3D3D;
-      --subtle: #8A8A8A;
-      --gold: #C9A84C;
-      --terracotta: #C96B4A;
-      --divider: #EBEBEB;
-
-      --space-xs: 8px;
-      --space-sm: 16px;
-      --space-md: 24px;
-      --space-lg: 40px;
-      --space-xl: 64px;
-      --space-2xl: 80px;
-      --container-max: 640px;
-      --container-pad: 20px;
-
-      --font-headline: 'Playfair Display', Georgia, serif;
-      --font-body: 'Inter', system-ui, -apple-system, sans-serif;
-
-      --radius-sm: 8px;
-      --radius-md: 12px;
-      --radius-lg: 16px;
-      --radius-full: 9999px;
+      --coral:     #FF5C3A;
+      --hot-pink:  #FF3881;
+      --deep-peach:#FF6B4A;
+      --cream:     #FFF8F3;
+      --warm-dark: #1A0A06;
+      --raspberry: #C01654;
+      --electric:  #FFD23F;
+      --deep-bg:   #1C0A14;
+      --mid-bg:    #2E1020;
+      --text-light:#FFF8F3;
+      --text-muted:#E8C4B8;
     }
 
-    /* ===========================
-       RESET & BASE
-    =========================== */
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      scroll-behavior: smooth;
-      -webkit-text-size-adjust: 100%;
-    }
+    html { scroll-behavior: smooth; }
 
     body {
-      background-color: var(--bg);
-      color: var(--body);
-      font-family: var(--font-body);
-      font-size: 17px;
-      line-height: 1.65;
-      -webkit-font-smoothing: antialiased;
-      padding-bottom: 80px; /* space for sticky bar */
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--cream);
+      color: var(--warm-dark);
+      overflow-x: hidden;
+      padding-bottom: 80px; /* sticky bar clearance */
     }
 
-    /* ===========================
-       LAYOUT
-    =========================== */
-    .container {
-      max-width: var(--container-max);
-      margin: 0 auto;
-      padding: 0 var(--container-pad);
-    }
-
-    section {
-      padding: var(--space-lg) 0;
-    }
-
-    /* ===========================
-       TYPOGRAPHY
-    =========================== */
-    h1 {
-      font-family: var(--font-headline);
-      font-size: 2rem; /* 32px */
+    /* ─── TRUST BAR ─── */
+    .trust-bar {
+      background: var(--deep-bg);
+      color: var(--text-light);
+      text-align: center;
+      padding: 10px 16px;
+      font-size: 13px;
       font-weight: 700;
-      color: var(--headline);
-      line-height: 1.2;
-      letter-spacing: -0.01em;
-    }
-
-    h2 {
-      font-family: var(--font-headline);
-      font-size: 1.625rem; /* 26px */
-      font-weight: 700;
-      color: var(--headline);
-      line-height: 1.25;
-      letter-spacing: -0.01em;
-      margin-bottom: var(--space-md);
-    }
-
-    h3 {
-      font-family: var(--font-body);
-      font-size: 1.125rem; /* 18px */
-      font-weight: 600;
-      color: var(--headline);
-      line-height: 1.3;
-      margin-bottom: var(--space-xs);
-    }
-
-    p {
-      margin-bottom: var(--space-sm);
-    }
-
-    p:last-child {
-      margin-bottom: 0;
-    }
-
-    strong {
-      font-weight: 600;
-      color: var(--headline);
-    }
-
-    @media (min-width: 640px) {
-      h1 { font-size: 3rem; }
-      h2 { font-size: 2.25rem; }
-      h3 { font-size: 1.375rem; }
-      body { font-size: 18px; }
-    }
-
-    /* ===========================
-       BUTTONS
-    =========================== */
-    .btn {
-      display: block;
-      width: 100%;
-      max-width: 420px;
-      height: 56px;
-      background-color: var(--accent);
-      color: #fff;
-      font-family: var(--font-body);
-      font-size: 1.125rem;
-      font-weight: 600;
       letter-spacing: 0.02em;
-      text-align: center;
-      text-decoration: none;
-      border: none;
-      border-radius: var(--radius-md);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 4px 16px rgba(74,124,89,0.25);
-      transition: background-color 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
-      margin: 0 auto;
-      padding: 0 var(--space-md);
     }
+    .trust-bar span { color: var(--electric); }
 
-    .btn:hover {
-      background-color: var(--accent-hover);
-      box-shadow: 0 6px 20px rgba(74,124,89,0.35);
-    }
-
-    .btn:active {
-      transform: scale(0.98);
-      background-color: var(--accent-hover);
-    }
-
-    /* ===========================
-       STICKY CTA BAR
-    =========================== */
-    .sticky-bar {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      z-index: 100;
-      background-color: var(--accent);
-      padding: 12px var(--container-pad);
-      box-shadow: 0 -4px 20px rgba(0,0,0,0.12);
-    }
-
-    .sticky-bar .btn {
-      max-width: 600px;
-      height: 48px;
-      font-size: 1rem;
-      box-shadow: none;
-    }
-
-    .sticky-bar .btn:hover {
-      box-shadow: none;
-    }
-
-    /* ===========================
-       SECTION: HERO
-    =========================== */
+    /* ─── HERO ─── */
     .hero {
-      padding-top: var(--space-2xl);
-      padding-bottom: var(--space-lg);
+      background: linear-gradient(160deg, #2E0D1E 0%, #1A0A06 60%, #3D1420 100%);
+      padding: 40px 20px 50px;
       text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -80px; right: -80px;
+      width: 320px; height: 320px;
+      background: radial-gradient(circle, rgba(255,56,129,0.25) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -60px; left: -60px;
+      width: 260px; height: 260px;
+      background: radial-gradient(circle, rgba(255,210,63,0.15) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: var(--hot-pink);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 100px;
+      margin-bottom: 20px;
     }
 
     .hero h1 {
-      margin-bottom: var(--space-md);
+      font-size: clamp(36px, 9vw, 56px);
+      font-weight: 900;
+      color: var(--cream);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+    .hero h1 em {
+      font-style: normal;
+      color: var(--electric);
     }
 
-    .hero .subhead {
-      font-size: 1.0625rem;
-      color: var(--body);
-      margin-bottom: var(--space-md);
-      max-width: 540px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .trust-bar {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: var(--space-xs);
-      font-size: 0.875rem;
-      color: var(--subtle);
-      margin-bottom: var(--space-md);
-    }
-
-    .trust-bar .stars {
-      color: var(--gold);
-      font-size: 1rem;
-    }
-
-    .trust-bar .dot {
-      color: var(--divider);
-    }
-
-    .hero-cta-wrap {
-      margin-bottom: var(--space-sm);
-    }
-
-    .price-context {
-      font-size: 0.875rem;
-      color: var(--subtle);
-      text-align: center;
-      margin-top: var(--space-xs);
-    }
-
-    /* ===========================
-       SECTION: PROOF — DEMO
-    =========================== */
-    .demo-section {
-      background-color: var(--surface);
-      border-top: 1px solid var(--divider);
-      border-bottom: 1px solid var(--divider);
-    }
-
-    .demo-cards {
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-sm);
-      margin-top: var(--space-md);
-    }
-
-    .demo-card {
-      background-color: var(--bg);
-      border: 1px solid var(--divider);
-      border-radius: var(--radius-lg);
-      padding: var(--space-md);
-    }
-
-    .demo-exchange {
-      font-family: var(--font-body);
-      font-size: 0.9375rem;
-      margin-bottom: var(--space-xs);
-    }
-
-    .demo-exchange .user-line {
-      color: var(--subtle);
-      margin-bottom: 4px;
-    }
-
-    .demo-exchange .user-line::before {
-      content: "YOU: ";
+    .hero-sub {
+      font-size: 17px;
       font-weight: 600;
-      color: var(--accent);
-    }
-
-    .demo-exchange .siri-line {
-      color: var(--headline);
-      font-weight: 500;
-    }
-
-    .demo-exchange .siri-line::before {
-      content: "SIRI: ";
-      font-weight: 600;
-      color: #5856D6; /* Siri purple */
-    }
-
-    .demo-caption {
-      font-size: 0.8125rem;
-      color: var(--subtle);
-      font-style: italic;
-      margin-top: 8px;
-    }
-
-    .demo-transition {
-      margin-top: var(--space-md);
-      padding: var(--space-md);
-      background-color: var(--surface);
-      border-radius: var(--radius-md);
-      font-size: 0.9375rem;
-      border-left: 3px solid var(--accent);
-    }
-
-    /* ===========================
-       SECTION: PAIN
-    =========================== */
-    .pain-list {
-      list-style: none;
-      margin: var(--space-md) 0;
-    }
-
-    .pain-list li {
-      padding: var(--space-sm) 0;
-      border-bottom: 1px solid var(--divider);
-      font-size: 1rem;
+      color: var(--text-muted);
+      max-width: 360px;
+      margin: 0 auto 32px;
       line-height: 1.5;
     }
 
-    .pain-list li:last-child {
-      border-bottom: none;
+    /* Phone illustration */
+    .phone-wrap {
+      display: flex;
+      justify-content: center;
+      margin: 0 auto 32px;
+    }
+    .phone-illo {
+      position: relative;
+      width: 180px;
+      height: 320px;
+    }
+    .phone-body {
+      width: 180px;
+      height: 320px;
+      background: #111;
+      border-radius: 36px;
+      border: 4px solid #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.08);
+    }
+    .phone-notch {
+      position: absolute;
+      top: 12px;
+      width: 70px; height: 20px;
+      background: #111;
+      border-radius: 20px;
+      border: 2px solid #333;
+      z-index: 2;
+    }
+    .phone-screen {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(160deg, #1C0A20 0%, #0D0612 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 14px 20px;
+      gap: 10px;
+    }
+    .siri-orb {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      background: conic-gradient(from 0deg, #FF3881, #FF5C3A, #FFD23F, #FF3881);
+      animation: spin 4s linear infinite;
+      box-shadow: 0 0 30px rgba(255,56,129,0.5);
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .siri-text {
+      font-size: 11px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.7);
+      text-align: center;
+      letter-spacing: 0.03em;
+    }
+    .siri-bubble {
+      background: rgba(255,255,255,0.12);
+      border-radius: 12px;
+      padding: 8px 10px;
+      font-size: 10px;
+      color: #fff;
+      text-align: left;
+      width: 100%;
+      font-weight: 600;
+      line-height: 1.4;
+      backdrop-filter: blur(4px);
+    }
+    .siri-bubble span {
+      display: block;
+      font-size: 9px;
+      opacity: 0.6;
+      margin-bottom: 2px;
+      font-weight: 400;
     }
 
-    .pain-bridge {
-      background-color: var(--surface);
-      border-radius: var(--radius-md);
-      padding: var(--space-md);
-      margin-top: var(--space-md);
-      border: 1px solid var(--divider);
+    .badge-sticker {
+      position: absolute;
+      top: -12px; right: -20px;
+      background: var(--electric);
+      color: var(--warm-dark);
+      font-size: 11px;
+      font-weight: 900;
+      padding: 6px 10px;
+      border-radius: 8px;
+      transform: rotate(6deg);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      line-height: 1.3;
+      text-align: center;
     }
 
-    /* ===========================
-       SECTION: HOW IT WORKS
-    =========================== */
-    .how-section {
-      background-color: var(--surface);
-      border-top: 1px solid var(--divider);
-      border-bottom: 1px solid var(--divider);
+    .cta-btn {
+      display: block;
+      width: 100%;
+      max-width: 400px;
+      margin: 0 auto;
+      background: var(--hot-pink);
+      color: #fff;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 18px;
+      font-weight: 900;
+      padding: 18px 24px;
+      border-radius: 16px;
+      text-decoration: none;
+      text-align: center;
+      letter-spacing: 0.01em;
+      box-shadow: 0 8px 24px rgba(255,56,129,0.45);
+      transition: transform 0.15s, box-shadow 0.15s;
+      border: none;
+      cursor: pointer;
+      line-height: 1.3;
+    }
+    .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(255,56,129,0.55); }
+    .cta-btn:active { transform: translateY(0); }
+    .cta-btn small {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      opacity: 0.85;
+      margin-top: 3px;
     }
 
+    .hero-trust {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      margin-top: 20px;
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .stars { color: var(--electric); letter-spacing: -1px; }
+
+    /* ─── SOCIAL PROOF STRIP ─── */
+    .proof-strip {
+      background: var(--hot-pink);
+      padding: 36px 20px;
+      text-align: center;
+    }
+    .proof-strip h2 {
+      font-size: 26px;
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 24px;
+      line-height: 1.2;
+    }
+    .proof-strip h2 span { background: rgba(0,0,0,0.2); padding: 0 6px; border-radius: 6px; }
+    .proof-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+    .proof-card {
+      background: rgba(255,255,255,0.15);
+      border-radius: 16px;
+      padding: 18px;
+      text-align: left;
+      backdrop-filter: blur(4px);
+    }
+    .proof-card p {
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
+      line-height: 1.5;
+      margin-bottom: 10px;
+    }
+    .proof-card .reviewer {
+      font-size: 12px;
+      color: rgba(255,255,255,0.75);
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .proof-card .reviewer .avatar {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px;
+    }
+
+    /* ─── PROBLEM ─── */
+    .problem {
+      background: var(--cream);
+      padding: 52px 20px;
+    }
+    .section-label {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--coral);
+      margin-bottom: 12px;
+    }
+    .problem h2 {
+      font-size: clamp(26px, 6vw, 36px);
+      font-weight: 900;
+      line-height: 1.15;
+      margin-bottom: 28px;
+      letter-spacing: -0.01em;
+    }
+    .problem-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      max-width: 480px;
+    }
+    .problem-item {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      background: #fff;
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+    .problem-item .icon {
+      font-size: 28px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .problem-item h3 {
+      font-size: 15px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+    .problem-item p {
+      font-size: 14px;
+      color: #666;
+      line-height: 1.5;
+    }
+
+    /* ─── WHAT YOU GET ─── */
+    .whats-inside {
+      background: var(--deep-bg);
+      padding: 52px 20px;
+    }
+    .whats-inside .section-label { color: var(--electric); }
+    .whats-inside h2 {
+      font-size: clamp(26px, 6vw, 36px);
+      font-weight: 900;
+      color: var(--cream);
+      line-height: 1.15;
+      margin-bottom: 8px;
+    }
+    .whats-inside .price-callout {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--hot-pink);
+      color: #fff;
+      font-size: 18px;
+      font-weight: 900;
+      padding: 8px 18px;
+      border-radius: 100px;
+      margin: 16px 0 28px;
+    }
+    .inside-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-width: 480px;
+    }
+    .inside-item {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      background: rgba(255,255,255,0.07);
+      border-radius: 14px;
+      padding: 14px 16px;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .inside-item span:first-child { font-size: 22px; flex-shrink: 0; }
+    .inside-item .inside-text { font-size: 14px; font-weight: 700; color: var(--cream); line-height: 1.4; }
+    .inside-item .inside-text small { display: block; font-weight: 400; color: var(--text-muted); font-size: 12px; margin-top: 2px; }
+
+    /* ─── HOW IT WORKS ─── */
+    .how-it-works {
+      background: var(--cream);
+      padding: 52px 20px;
+    }
+    .how-it-works h2 {
+      font-size: clamp(26px, 6vw, 36px);
+      font-weight: 900;
+      line-height: 1.15;
+      margin-bottom: 32px;
+    }
     .steps {
       display: flex;
       flex-direction: column;
-      gap: var(--space-md);
-      margin-top: var(--space-md);
+      gap: 0;
+      max-width: 480px;
     }
-
     .step {
       display: flex;
-      gap: var(--space-sm);
-      align-items: flex-start;
+      gap: 16px;
+      position: relative;
+      padding-bottom: 28px;
     }
-
-    .step-number {
+    .step:last-child { padding-bottom: 0; }
+    .step-num {
       flex-shrink: 0;
-      width: 36px;
-      height: 36px;
-      background-color: var(--accent);
+      width: 44px; height: 44px;
+      background: var(--hot-pink);
       color: #fff;
-      border-radius: var(--radius-full);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--font-body);
-      font-weight: 600;
-      font-size: 0.875rem;
-      margin-top: 2px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      font-weight: 900;
+      position: relative;
+      z-index: 1;
     }
-
+    .step-line {
+      position: absolute;
+      left: 21px;
+      top: 44px;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--hot-pink), transparent);
+    }
+    .step:last-child .step-line { display: none; }
     .step-content h3 {
+      font-size: 17px;
+      font-weight: 800;
       margin-bottom: 4px;
+      margin-top: 10px;
+    }
+    .step-content p { font-size: 14px; color: #666; line-height: 1.5; }
+    .step-content .step-example {
+      margin-top: 8px;
+      background: #f0e8f5;
+      border-left: 3px solid var(--hot-pink);
+      border-radius: 0 8px 8px 0;
+      padding: 8px 12px;
+      font-size: 13px;
+      font-style: italic;
+      color: #555;
     }
 
-    .step-content p {
-      font-size: 0.9375rem;
-      color: var(--body);
+    /* ─── SECOND PROOF ─── */
+    .proof-2 {
+      background: #1C0A14;
+      padding: 52px 20px;
     }
-
-    /* ===========================
-       SECTION: WHAT'S INCLUDED
-    =========================== */
-    .included-list {
-      list-style: none;
-      margin-top: var(--space-md);
+    .proof-2 h2 {
+      font-size: clamp(22px, 5vw, 30px);
+      font-weight: 900;
+      color: var(--cream);
+      margin-bottom: 24px;
+      line-height: 1.2;
     }
-
-    .included-list li {
-      display: flex;
-      gap: var(--space-sm);
-      align-items: flex-start;
-      padding: var(--space-sm) 0;
-      border-bottom: 1px solid var(--divider);
-    }
-
-    .included-list li:last-child {
-      border-bottom: none;
-    }
-
-    .included-check {
-      flex-shrink: 0;
-      width: 22px;
-      height: 22px;
-      background-color: var(--accent);
-      border-radius: var(--radius-full);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      font-size: 0.75rem;
-      margin-top: 2px;
-    }
-
-    .value-contrast {
-      background-color: #F0F5F2;
-      border-radius: var(--radius-md);
-      padding: var(--space-md);
-      margin-top: var(--space-md);
-      font-size: 0.9375rem;
-      color: var(--body);
-      border-left: 3px solid var(--accent);
-    }
-
-    /* ===========================
-       SECTION: SOCIAL PROOF
-    =========================== */
-    .social-section {
-      background-color: var(--surface);
-      border-top: 1px solid var(--divider);
-      border-bottom: 1px solid var(--divider);
-    }
-
-    .tiktok-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background-color: #000;
-      color: #fff;
-      font-size: 0.8125rem;
-      font-weight: 600;
-      padding: 6px 14px;
-      border-radius: var(--radius-full);
-      margin-bottom: var(--space-sm);
-    }
-
-    .testimonials {
+    .proof-2 .stars { font-size: 16px; margin-bottom: 16px; display: block; }
+    .proof-cards-2 {
       display: flex;
       flex-direction: column;
-      gap: var(--space-sm);
-      margin-top: var(--space-md);
+      gap: 14px;
+      max-width: 480px;
     }
-
-    .testimonial {
-      background-color: var(--bg);
-      border: 1px solid var(--divider);
-      border-radius: var(--radius-lg);
-      padding: var(--space-md);
+    .proof-card-2 {
+      background: rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 20px;
+      border: 1px solid rgba(255,255,255,0.1);
     }
+    .proof-card-2 .quote { font-size: 24px; color: var(--hot-pink); font-weight: 900; line-height: 1; margin-bottom: 8px; }
+    .proof-card-2 p { font-size: 14px; color: var(--cream); line-height: 1.6; margin-bottom: 12px; font-weight: 500; }
+    .proof-card-2 .name { font-size: 12px; font-weight: 800; color: var(--electric); }
 
-    .testimonial-stars {
-      color: var(--gold);
-      font-size: 0.9375rem;
-      margin-bottom: var(--space-xs);
+    /* ─── UPSELL ─── */
+    .upsell {
+      background: linear-gradient(135deg, #FF5C3A 0%, #FF3881 100%);
+      padding: 52px 20px;
+      text-align: center;
     }
-
-    .testimonial-name {
+    .upsell-badge {
+      display: inline-block;
+      background: rgba(0,0,0,0.2);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 100px;
+      margin-bottom: 16px;
+    }
+    .upsell h2 {
+      font-size: clamp(26px, 6vw, 38px);
+      font-weight: 900;
+      color: #fff;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+    .upsell p {
+      font-size: 16px;
+      color: rgba(255,255,255,0.85);
+      max-width: 380px;
+      margin: 0 auto 24px;
+      line-height: 1.5;
       font-weight: 600;
-      font-size: 0.875rem;
-      color: var(--subtle);
-      margin-bottom: var(--space-xs);
     }
-
-    .testimonial blockquote {
-      font-size: 0.9375rem;
-      line-height: 1.6;
-      color: var(--body);
-      font-style: italic;
+    .upsell-list {
+      list-style: none;
+      text-align: left;
+      max-width: 360px;
+      margin: 0 auto 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
-
-    .placeholder-note {
-      font-size: 0.75rem;
-      color: var(--terracotta);
-      font-style: normal;
+    .upsell-list li {
+      display: flex;
+      gap: 10px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .upsell-list li span:first-child { flex-shrink: 0; }
+    .upsell-price {
+      font-size: 32px;
+      font-weight: 900;
+      color: var(--electric);
+      margin-bottom: 20px;
+    }
+    .upsell-price small {
+      font-size: 16px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.7);
+      text-decoration: line-through;
+      margin-right: 8px;
+    }
+    .cta-btn-dark {
       display: block;
-      margin-top: 4px;
+      width: 100%;
+      max-width: 400px;
+      margin: 0 auto;
+      background: #fff;
+      color: var(--hot-pink);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 17px;
+      font-weight: 900;
+      padding: 18px 24px;
+      border-radius: 16px;
+      text-decoration: none;
+      text-align: center;
+      letter-spacing: 0.01em;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+      transition: transform 0.15s;
+      border: none;
+      cursor: pointer;
     }
+    .cta-btn-dark:hover { transform: translateY(-2px); }
 
-    /* ===========================
-       SECTION: OFFER STACK
-    =========================== */
-    .offer-box {
-      border: 2px solid var(--accent);
-      border-radius: var(--radius-lg);
-      padding: var(--space-md);
-      margin-top: var(--space-md);
-      margin-bottom: var(--space-md);
+    /* ─── FAQ ─── */
+    .faq {
+      background: var(--cream);
+      padding: 52px 20px;
     }
-
-    .offer-title {
-      font-family: var(--font-headline);
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: var(--headline);
-      margin-bottom: var(--space-xs);
+    .faq h2 {
+      font-size: clamp(26px, 6vw, 36px);
+      font-weight: 900;
+      line-height: 1.15;
+      margin-bottom: 28px;
     }
-
-    .offer-price {
-      font-size: 2rem;
-      font-weight: 700;
-      color: var(--accent);
-      margin-bottom: var(--space-xs);
-    }
-
-    .offer-desc {
-      font-size: 0.9375rem;
-      color: var(--body);
-      margin-bottom: var(--space-md);
-    }
-
-    .upsell-note {
-      background-color: #FFF8F0;
-      border: 1px solid #F5D9B8;
-      border-radius: var(--radius-md);
-      padding: var(--space-md);
-      margin-top: var(--space-md);
-      font-size: 0.875rem;
-      color: var(--body);
-    }
-
-    .upsell-note strong {
-      color: var(--terracotta);
-    }
-
-    /* ===========================
-       SECTION: GUARANTEE
-    =========================== */
-    .guarantee-section {
-      background-color: var(--surface);
-      border-top: 1px solid var(--divider);
-      border-bottom: 1px solid var(--divider);
-    }
-
-    .guarantee-box {
-      display: flex;
-      gap: var(--space-md);
-      align-items: flex-start;
-    }
-
-    .guarantee-badge {
-      flex-shrink: 0;
-      width: 64px;
-      height: 64px;
-      border: 3px solid var(--terracotta);
-      border-radius: var(--radius-full);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-      background-color: #FFF5F2;
-    }
-
-    .guarantee-content h3 {
-      color: var(--terracotta);
-    }
-
-    /* ===========================
-       SECTION: FAQ
-    =========================== */
     .faq-list {
-      margin-top: var(--space-md);
-      border: 1px solid var(--divider);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
-
     .faq-item {
-      border-bottom: 1px solid var(--divider);
+      background: #fff;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
     }
-
-    .faq-item:last-child {
-      border-bottom: none;
-    }
-
-    .faq-question {
+    .faq-item summary {
+      font-size: 15px;
+      font-weight: 800;
+      padding: 18px 20px;
+      cursor: pointer;
+      list-style: none;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: var(--space-md);
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 0.9375rem;
-      color: var(--headline);
-      background-color: var(--surface);
-      border: none;
-      width: 100%;
-      text-align: left;
-      gap: var(--space-sm);
-      transition: background-color 0.15s ease;
-      min-height: 48px;
+      gap: 12px;
     }
-
-    .faq-question:hover {
-      background-color: var(--bg);
-    }
-
-    .faq-chevron {
+    .faq-item summary::after {
+      content: '+';
+      font-size: 22px;
+      font-weight: 400;
+      color: var(--hot-pink);
       flex-shrink: 0;
-      width: 20px;
-      height: 20px;
+    }
+    .faq-item[open] summary::after { content: '−'; }
+    .faq-item p {
+      font-size: 14px;
+      color: #555;
+      line-height: 1.6;
+      padding: 0 20px 18px;
+    }
+
+    /* ─── GUARANTEE ─── */
+    .guarantee {
+      background: var(--deep-bg);
+      padding: 52px 20px;
+      text-align: center;
+    }
+    .guarantee-badge {
+      width: 90px; height: 90px;
+      background: var(--electric);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 36px;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 24px rgba(255,210,63,0.4);
+    }
+    .guarantee h2 {
+      font-size: clamp(26px, 6vw, 36px);
+      font-weight: 900;
+      color: var(--cream);
+      margin-bottom: 16px;
+      line-height: 1.15;
+    }
+    .guarantee p {
+      font-size: 16px;
+      color: var(--text-muted);
+      max-width: 400px;
+      margin: 0 auto;
+      line-height: 1.6;
+      font-weight: 500;
+    }
+    .guarantee strong { color: var(--cream); }
+
+    /* ─── FINAL CTA ─── */
+    .final-cta {
+      background: linear-gradient(160deg, #2E0D1E 0%, #1A0A06 100%);
+      padding: 60px 20px 40px;
+      text-align: center;
+    }
+    .final-cta h2 {
+      font-size: clamp(30px, 7vw, 48px);
+      font-weight: 900;
+      color: var(--cream);
+      line-height: 1.05;
+      margin-bottom: 16px;
+      letter-spacing: -0.02em;
+    }
+    .final-cta h2 em { font-style: normal; color: var(--electric); }
+    .final-price {
+      font-size: 44px;
+      font-weight: 900;
+      color: #fff;
+      margin: 20px 0;
+    }
+    .final-price small { font-size: 18px; font-weight: 600; color: var(--text-muted); display: block; margin-top: 4px; }
+    .urgency {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--electric);
+      margin-top: 16px;
+      letter-spacing: 0.03em;
+    }
+    .footer-note {
+      margin-top: 32px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.3);
+      line-height: 1.6;
+    }
+    .footer-note a { color: rgba(255,255,255,0.4); text-decoration: underline; }
+
+    /* ─── STICKY BAR ─── */
+    .sticky-bar {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: var(--hot-pink);
+      padding: 12px 20px;
       display: flex;
       align-items: center;
-      justify-content: center;
-      color: var(--subtle);
-      transition: transform 0.25s ease;
+      justify-content: space-between;
+      gap: 12px;
+      z-index: 999;
+      box-shadow: 0 -4px 20px rgba(255,56,129,0.4);
     }
-
-    .faq-item.open .faq-chevron {
-      transform: rotate(180deg);
+    .sticky-bar-text {
+      font-size: 13px;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.3;
     }
-
-    .faq-answer {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.3s ease, padding 0.3s ease;
-      background-color: var(--bg);
-    }
-
-    .faq-answer-inner {
-      padding: 0 var(--space-md) var(--space-md);
-      font-size: 0.9375rem;
-      color: var(--body);
-      line-height: 1.65;
-    }
-
-    .faq-item.open .faq-answer {
-      max-height: 500px;
-    }
-
-    /* ===========================
-       SECTION: FINAL CTA
-    =========================== */
-    .final-cta {
-      text-align: center;
-    }
-
-    .final-cta h2 {
-      margin-bottom: var(--space-sm);
-    }
-
-    .final-subhead {
-      color: var(--body);
-      font-size: 1.0625rem;
-      margin-bottom: var(--space-md);
-    }
-
-    .final-guarantee {
-      font-size: 0.875rem;
-      color: var(--subtle);
-      margin-top: var(--space-sm);
-    }
-
-    /* ===========================
-       FOOTER
-    =========================== */
-    footer {
-      border-top: 1px solid var(--divider);
-      padding: var(--space-md) 0;
-      text-align: center;
-      font-size: 0.8125rem;
-      color: var(--subtle);
-    }
-
-    footer a {
-      color: var(--subtle);
+    .sticky-bar-text small { display: block; font-weight: 500; font-size: 11px; opacity: 0.8; }
+    .sticky-bar-btn {
+      flex-shrink: 0;
+      background: var(--electric);
+      color: var(--warm-dark);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 900;
+      padding: 12px 20px;
+      border-radius: 12px;
       text-decoration: none;
+      white-space: nowrap;
+      border: none;
+      cursor: pointer;
     }
 
-    footer a:hover {
-      color: var(--accent);
-      text-decoration: underline;
+    /* ─── UTILITY ─── */
+    .container { max-width: 540px; margin: 0 auto; }
+    @media (min-width: 600px) {
+      .proof-cards { flex-direction: row; flex-wrap: wrap; }
+      .proof-card { flex: 1 1 200px; }
+      .proof-cards-2 { flex-direction: row; flex-wrap: wrap; }
+      .proof-card-2 { flex: 1 1 200px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- ===========================
-       STICKY CTA BAR
-  =========================== -->
-  <div class="sticky-bar" id="sticky-bar" aria-hidden="true">
-    <div class="container">
-      <a href="https://remember-guide.lemonsqueezy.com/checkout" class="btn" id="sticky-cta" aria-label="Get Instant Access for $37">
-        Get Instant Access — $37
-      </a>
-    </div>
+  <!-- TRUST BAR -->
+  <div class="trust-bar">
+    ⭐⭐⭐⭐⭐ &nbsp;<span>10,000+ moms</span>&nbsp; already use this — join them
   </div>
 
-  <!-- ===========================
-       SECTION 1: HERO
-  =========================== -->
-  <section class="hero" id="hero">
+  <!-- HERO -->
+  <section class="hero">
     <div class="container">
-      <h1>Your iPhone knows something it shouldn't.</h1>
-      <p class="subhead">
-        iOS 27 changed how Siri works. Most people have no idea. This guide shows you exactly how to set it up so Siri remembers everything — names, codes, details — and recalls it when you ask. Out loud. Hands-free.
-      </p>
-      <div class="trust-bar">
-        <span class="stars">★★★★★</span>
-        <span>[PLACEHOLDER: 247 people] already set this up</span>
-        <span class="dot">·</span>
-        <span>30-day money-back guarantee</span>
-      </div>
-      <div class="hero-cta-wrap">
-        <a href="https://remember-guide.lemonsqueezy.com/checkout" class="btn" id="hero-cta">
-          Get Instant Access — $37
-        </a>
-      </div>
-      <p class="price-context">One-time. Instant access. Yours forever.</p>
-    </div>
-  </section>
+      <div class="hero-badge">✨ New iOS Siri Feature</div>
+      <h1>Outsource your<br>mom-brain.<br><em>Finally.</em></h1>
+      <p class="hero-sub">You're already holding everything together — now let your iPhone hold the details for you.</p>
 
-  <!-- ===========================
-       SECTION 2: PROOF / DEMO
-  =========================== -->
-  <section class="demo-section">
-    <div class="container">
-      <h2>Here's what this actually looks like.</h2>
-      <div class="demo-cards">
-
-        <div class="demo-card">
-          <div class="demo-exchange">
-            <p class="user-line">Hey Siri, who's the bartender at the Dark Room?</p>
-            <p class="siri-line">Scotty.</p>
-          </div>
-          <p class="demo-caption">One sentence, told to Siri three weeks ago. Recalled in two seconds.</p>
-        </div>
-
-        <div class="demo-card">
-          <div class="demo-exchange">
-            <p class="user-line">Hey Siri, what's the wifi password at the cabin?</p>
-            <p class="siri-line">The wifi password at the cabin is Lakeview2024!</p>
-          </div>
-          <p class="demo-caption">No searching. No notes app. No "wait what did we use last time."</p>
-        </div>
-
-        <div class="demo-card">
-          <div class="demo-exchange">
-            <p class="user-line">Hey Siri, what did the dentist say about Jamie's tooth?</p>
-            <p class="siri-line">Jamie needs a follow-up appointment to check the molar in January.</p>
-          </div>
-          <p class="demo-caption">Said it once, out loud, in the car on the way home. It remembered.</p>
-        </div>
-
-      </div>
-      <div class="demo-transition">
-        This isn't a trick. It's iOS 27's Siri — set up one specific way, with one specific list. The guide shows you exactly how in about 15 minutes.
-      </div>
-    </div>
-  </section>
-
-  <!-- ===========================
-       SECTION 3: PAIN
-  =========================== -->
-  <section>
-    <div class="container">
-      <h2>Does any of this sound familiar?</h2>
-      <ul class="pain-list">
-        <li>🧠 You walk into a room and forget why you went there. (Again.)</li>
-        <li>📱 You have a notes app full of stuff you'll never find when you need it.</li>
-        <li>😬 You blank on someone's name in the middle of a conversation.</li>
-        <li>📋 You've written the same thing down in three different places and still lost it.</li>
-        <li>🚗 You remember something important — in the car, hands full, kids in the back — and you know it'll be gone by the time you can write it down.</li>
-      </ul>
-      <div class="pain-bridge">
-        <p>Your mental load is real. And it's not a memory problem — you're not forgetting more than other people. You're just storing everything in your head because nothing else actually works.</p>
-        <p style="margin-top: 12px;"><strong>There's a fix. And it's already in your phone.</strong></p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===========================
-       SECTION 4: HOW IT WORKS
-  =========================== -->
-  <section class="how-section">
-    <div class="container">
-      <h2>Set it up in 15 minutes. Use it forever.</h2>
-      <div class="steps">
-
-        <div class="step">
-          <div class="step-number">1</div>
-          <div class="step-content">
-            <h3>📝 Create your Remember list</h3>
-            <p>You'll build one specific list in your Reminders app — named exactly "Remember." That's the system. Siri uses it as a memory bank, not a to-do list.</p>
-          </div>
-        </div>
-
-        <div class="step">
-          <div class="step-number">2</div>
-          <div class="step-content">
-            <h3>🎙️ Tell Siri what to remember</h3>
-            <p>Any time something matters — a name, a code, something someone tells you — you say it out loud. "Hey Siri, add to the Remember list — the neighbor's dog is named Biscuit." That's it. No typing.</p>
-          </div>
-        </div>
-
-        <div class="step">
-          <div class="step-number">3</div>
-          <div class="step-content">
-            <h3>💬 Ask Siri anytime</h3>
-            <p>Two days later, two years later: "Hey Siri, what's the neighbor's dog's name?" Siri says: "Biscuit." Hands-free, instant, every time.</p>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ===========================
-       SECTION 5: WHAT'S INCLUDED
-  =========================== -->
-  <section>
-    <div class="container">
-      <h2>What you get for $37</h2>
-      <ul class="included-list">
-        <li>
-          <div class="included-check">✓</div>
-          <div>
-            <strong>The Complete Remember Setup Guide</strong> — Step-by-step walkthrough of the full system. Every setting, every step, nothing left out. (~45 minutes of content)
-          </div>
-        </li>
-        <li>
-          <div class="included-check">✓</div>
-          <div>
-            <strong>The iOS 27 Apple Intelligence Setup Checklist</strong> — 8 settings most people have turned off. Takes 10 minutes to fix. Makes a huge difference.
-          </div>
-        </li>
-        <li>
-          <div class="included-check">✓</div>
-          <div>
-            <strong>25 "Remember List" Starter Prompts</strong> — Real examples of what to add to your Remember list (organized by category: family, home, work, health, social)
-          </div>
-        </li>
-        <li>
-          <div class="included-check">✓</div>
-          <div>
-            <strong>The Siri Voice Command Cheatsheet</strong> — Exact phrases that work. What to say to save, what to say to recall. Printable one-pager.
-          </div>
-        </li>
-        <li>
-          <div class="included-check">✓</div>
-          <div>
-            <strong>The Notes Setup Blueprint</strong> — How to structure Apple Notes so Siri can find the right information in longer notes (the sentence trick)
-          </div>
-        </li>
-      </ul>
-      <div class="value-contrast">
-        A personal assistant who remembered everything for you would cost $5,000/month. Your iPhone can do this. Right now. For $37.
-      </div>
-    </div>
-  </section>
-
-  <!-- ===========================
-       SECTION 6: SOCIAL PROOF
-  =========================== -->
-  <section class="social-section">
-    <div class="container">
-      <div class="tiktok-badge">
-        <span>♪</span> As Seen on TikTok
-      </div>
-      <h2>Real people. Real phones. Real results.</h2>
-      <div class="testimonials">
-
-        <div class="testimonial">
-          <div class="testimonial-stars">★★★★★</div>
-          <div class="testimonial-name">[PLACEHOLDER: Sarah M., mom of 3, Austin TX]</div>
-          <blockquote>
-            "I set this up on a Tuesday afternoon while the kids were at school. By Thursday I had already used Siri to remember my MIL's birthday, my son's jersey number, and the code for the gym locker I could never remember. I genuinely cannot believe I didn't know about this."
-            <span class="placeholder-note">[PLACEHOLDER — replace with real customer quote before launch]</span>
-          </blockquote>
-        </div>
-
-        <div class="testimonial">
-          <div class="testimonial-stars">★★★★★</div>
-          <div class="testimonial-name">[PLACEHOLDER: Jessica R., teacher, 38]</div>
-          <blockquote>
-            "I've been using Apple Notes for years and had no idea this was possible. The setup guide is so clear — I'm not a tech person at all and I had it working in under 20 minutes. This is one of those things you want to tell everyone about."
-            <span class="placeholder-note">[PLACEHOLDER — replace with real customer quote before launch]</span>
-          </blockquote>
-        </div>
-
-        <div class="testimonial">
-          <div class="testimonial-stars">★★★★★</div>
-          <div class="testimonial-name">[PLACEHOLDER: Amanda K., 41, works from home]</div>
-          <blockquote>
-            "The part about the Remember list being different from a to-do list is what clicked for me. It's for facts, not tasks. Once I understood that, everything made sense. Three weeks in and I've already saved probably 50 things I would have forgotten."
-            <span class="placeholder-note">[PLACEHOLDER — replace with real customer quote before launch]</span>
-          </blockquote>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ===========================
-       SECTION 7: OFFER STACK
-  =========================== -->
-  <section>
-    <div class="container">
-      <h2>Everything you need to actually use this system</h2>
-      <div class="offer-box">
-        <div class="offer-title">Remember: The iOS 27 Siri Setup System</div>
-        <div class="offer-price">$37</div>
-        <p class="offer-desc">The complete guide to setting up your iPhone so Siri actually remembers things for you. One-time purchase. Instant access. Yours forever.</p>
-        <a href="https://remember-guide.lemonsqueezy.com/checkout" class="btn">
-          Get Instant Access — $37
-        </a>
-      </div>
-      <div class="upsell-note">
-        <strong>Optional add-on at checkout: Early Access / Beta Prep Pack — $17</strong><br>
-        Interested in the full iOS 27 beta? This add-on covers how to get beta access safely, what to check before updating, how to back up properly, and what to test first. For the tech-comfortable buyer who wants to be first. It'll show up as an option when you checkout.
-      </div>
-    </div>
-  </section>
-
-  <!-- ===========================
-       SECTION 8: GUARANTEE
-  =========================== -->
-  <section class="guarantee-section">
-    <div class="container">
-      <div class="guarantee-box">
-        <div class="guarantee-badge">🛡️</div>
-        <div class="guarantee-content">
-          <h3>Try it for 30 days. If it doesn't work for you, get your money back.</h3>
-          <p>If you go through the guide and it doesn't do what I said — Siri doesn't recall things, the setup doesn't work, whatever the reason — email me and I'll refund every dollar. No questions, no waiting, no explaining yourself.</p>
-          <p style="margin-top: 12px;">I built this because it changed how I use my phone every single day. I want it to work for you the same way.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===========================
-       SECTION 9: FAQ
-  =========================== -->
-  <section>
-    <div class="container">
-      <h2>Questions people ask before they buy</h2>
-      <div class="faq-list" role="list">
-
-        <div class="faq-item" role="listitem">
-          <button class="faq-question" aria-expanded="false">
-            Does this work on my iPhone?
-            <span class="faq-chevron" aria-hidden="true">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </span>
-          </button>
-          <div class="faq-answer">
-            <div class="faq-answer-inner">
-              It requires iOS 27 and Apple Intelligence, which is available on iPhone 15 Pro, iPhone 15 Pro Max, and any iPhone 16 or later. If you have one of these phones and you update to iOS 27 when it releases in September, this works. (Heads up: iOS 27 is in public beta right now if you want to try it early.)
+      <div class="phone-wrap">
+        <div class="phone-illo">
+          <div class="phone-body">
+            <div class="phone-notch"></div>
+            <div class="phone-screen">
+              <div class="siri-orb"></div>
+              <p class="siri-text">Siri · Personal Memory</p>
+              <div class="siri-bubble">
+                <span>You asked Siri earlier:</span>
+                "Her pediatrician's name is Dr. Kim — Oak Street, (555) 802-4411"
+              </div>
+              <div class="siri-bubble">
+                <span>Saved 2 days ago:</span>
+                "Emma is allergic to amoxicillin"
+              </div>
             </div>
           </div>
+          <div class="badge-sticker">Hands-free<br>memory ✅</div>
         </div>
-
-        <div class="faq-item" role="listitem">
-          <button class="faq-question" aria-expanded="false">
-            I'm not a tech person. Will I be able to do this?
-            <span class="faq-chevron" aria-hidden="true">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </span>
-          </button>
-          <div class="faq-answer">
-            <div class="faq-answer-inner">
-              Yes. The guide is built for exactly this. Every step has a screenshot. Every setting is named exactly. If you can find your Settings app, you can set this up. Most people are done in 15–20 minutes.
-            </div>
-          </div>
-        </div>
-
-        <div class="faq-item" role="listitem">
-          <button class="faq-question" aria-expanded="false">
-            Do I need any other apps or subscriptions?
-            <span class="faq-chevron" aria-hidden="true">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </span>
-          </button>
-          <div class="faq-answer">
-            <div class="faq-answer-inner">
-              No. Everything runs on apps already on your phone — Siri, Reminders, and Notes. No extra apps, no subscriptions, no accounts to create.
-            </div>
-          </div>
-        </div>
-
-        <div class="faq-item" role="listitem">
-          <button class="faq-question" aria-expanded="false">
-            iOS 27 isn't out yet. Can I still buy?
-            <span class="faq-chevron" aria-hidden="true">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </span>
-          </button>
-          <div class="faq-answer">
-            <div class="faq-answer-inner">
-              Yes. The guide is ready now, and iOS 27 public beta is available for early testing. The official iOS 27 release is September 2026 alongside iPhone 18. You'll have everything you need before then, and I'll update the guide if anything changes between beta and launch.
-            </div>
-          </div>
-        </div>
-
-        <div class="faq-item" role="listitem">
-          <button class="faq-question" aria-expanded="false">
-            What if Siri doesn't recall something correctly?
-            <span class="faq-chevron" aria-hidden="true">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </span>
-          </button>
-          <div class="faq-answer">
-            <div class="faq-answer-inner">
-              The guide covers exactly how to phrase things so Siri finds them reliably. It's not magic — there's a specific way to word your Remember list items that makes Siri 10x more accurate. That's the core of what the guide teaches. If you follow it and something still doesn't work, the 30-day guarantee has you covered.
-            </div>
-          </div>
-        </div>
-
       </div>
-    </div>
-  </section>
 
-  <!-- ===========================
-       SECTION 10: FINAL CTA
-  =========================== -->
-  <section class="final-cta">
-    <div class="container">
-      <h2>Your iPhone can remember things for you.</h2>
-      <p class="final-subhead">You just have to tell it how.</p>
-      <a href="https://remember-guide.lemonsqueezy.com/checkout" class="btn">
-        Get Instant Access — $37
+      <a href="#checkout" class="cta-btn">
+        YES, I WANT THIS — $37
+        <small>Instant download · No subscription ever</small>
       </a>
-      <p class="final-guarantee">30-day money-back guarantee. No questions asked.</p>
+
+      <div class="hero-trust">
+        <span class="stars">★★★★★</span>
+        <span>4.9 out of 5 · [PLACEHOLDER — add review count]</span>
+      </div>
     </div>
   </section>
 
-  <!-- ===========================
-       FOOTER
-  =========================== -->
-  <footer>
+  <!-- SOCIAL PROOF STRIP -->
+  <section class="proof-strip">
     <div class="container">
-      <p>© 2026 Remember · <a href="/privacy">Privacy Policy</a> · <a href="mailto:hello@remember.app">hello@remember.app</a></p>
+      <h2>Real moms. Real results.<br><span>Zero sticky notes.</span></h2>
+      <div class="proof-cards">
+        <div class="proof-card">
+          <p>"[PLACEHOLDER — replace with real testimonial. Something specific like: I asked Siri my daughter's teacher's name at the school pickup line and she had it. I nearly cried.]"</p>
+          <div class="reviewer">
+            <div class="avatar">😊</div>
+            [PLACEHOLDER — First name, city]
+          </div>
+        </div>
+        <div class="proof-card">
+          <p>"[PLACEHOLDER — replace with real testimonial. Something like: My husband thought I was suddenly psychic because I remembered every detail from his doctor's appointment three weeks ago. It was Siri.]"</p>
+          <div class="reviewer">
+            <div class="avatar">🙋</div>
+            [PLACEHOLDER — First name, city]
+          </div>
+        </div>
+        <div class="proof-card">
+          <p>"[PLACEHOLDER — replace with real testimonial. Something like: I set it up during nap time. By dinner I had already used it twice. Worth every penny of the $37.]"</p>
+          <div class="reviewer">
+            <div class="avatar">🌟</div>
+            [PLACEHOLDER — First name, city]
+          </div>
+        </div>
+      </div>
     </div>
-  </footer>
+  </section>
 
-  <!-- ===========================
-       JAVASCRIPT — FAQ Accordion + Sticky Bar Logic
-  =========================== -->
-  <script>
-    // FAQ Accordion
-    document.querySelectorAll('.faq-question').forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        var item = btn.closest('.faq-item');
-        var isOpen = item.classList.contains('open');
-        // Close all
-        document.querySelectorAll('.faq-item.open').forEach(function(openItem) {
-          openItem.classList.remove('open');
-          openItem.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
-        });
-        // Toggle clicked
-        if (!isOpen) {
-          item.classList.add('open');
-          btn.setAttribute('aria-expanded', 'true');
-        }
-      });
-    });
+  <!-- PROBLEM AGITATION -->
+  <section class="problem">
+    <div class="container">
+      <span class="section-label">Sound familiar?</span>
+      <h2>Your brain wasn't built for this much stuff.</h2>
+      <div class="problem-list">
+        <div class="problem-item">
+          <div class="icon">🧠</div>
+          <div>
+            <h3>Mom brain is real — and it's exhausting.</h3>
+            <p>Names, dates, allergies, teacher preferences, that thing someone mentioned three weeks ago that you really needed to remember — it's all gone. You're not forgetful. You're overloaded.</p>
+          </div>
+        </div>
+        <div class="problem-item">
+          <div class="icon">📋</div>
+          <div>
+            <h3>The mental load never clocks out.</h3>
+            <p>You're the keeper of everything for everyone — and there's no backup system. When you drop a detail, it falls through the cracks of everyone's life, not just yours.</p>
+          </div>
+        </div>
+        <div class="problem-item">
+          <div class="icon">📱</div>
+          <div>
+            <h3>Your phone isn't actually helping.</h3>
+            <p>Notes app chaos. Reminders you ignore. Screenshots you'll "find later." You've got the most powerful computer in history in your pocket — and it's mostly just Instagram.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    // Sticky bar: hide when hero CTA is visible, show otherwise
-    var stickyBar = document.getElementById('sticky-bar');
-    var heroCta = document.getElementById('hero-cta');
+  <!-- WHAT YOU GET -->
+  <section class="whats-inside">
+    <div class="container">
+      <span class="section-label">What's inside</span>
+      <h2>Everything you need to make Siri your personal memory vault.</h2>
+      <div class="price-callout">$37 one-time &nbsp;·&nbsp; instant access</div>
+      <div class="inside-list">
+        <div class="inside-item">
+          <span>🎯</span>
+          <div class="inside-text">
+            The Setup Guide — done in one afternoon
+            <small>Step-by-step: turn on the right iOS 27 settings, build your first memory bank, speak your first memory out loud.</small>
+          </div>
+        </div>
+        <div class="inside-item">
+          <span>🗂️</span>
+          <div class="inside-text">
+            Your Memory Categories Starter Kit
+            <small>Medical, school, family, friends — ready-made structures so you're not starting from zero.</small>
+          </div>
+        </div>
+        <div class="inside-item">
+          <span>🗣️</span>
+          <div class="inside-text">
+            50 "Say This to Siri" Prompts
+            <small>The exact phrases that work best. Copy them, use them, never blank on how to save something again.</small>
+          </div>
+        </div>
+        <div class="inside-item">
+          <span>🔁</span>
+          <div class="inside-text">
+            The Daily Habit Loop
+            <small>A 2-minute daily practice that keeps your memory vault fresh and actually useful — not another forgotten app.</small>
+          </div>
+        </div>
+        <div class="inside-item">
+          <span>💡</span>
+          <div class="inside-text">
+            Hands-Free Tricks for Busy Moms
+            <small>Save memories while driving, cooking, doing school pickup. No stopping, no typing, no excuses.</small>
+          </div>
+        </div>
+        <div class="inside-item">
+          <span>⚡</span>
+          <div class="inside-text">
+            Quick Reference Cheat Sheet
+            <small>One page. Print it. Stick it on your fridge. Everything you need in 60 seconds flat.</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    function updateStickyBar() {
-      if (!heroCta) return;
-      var rect = heroCta.getBoundingClientRect();
-      var heroVisible = rect.bottom > 0 && rect.top < window.innerHeight;
-      stickyBar.style.opacity = heroVisible ? '0' : '1';
-      stickyBar.style.pointerEvents = heroVisible ? 'none' : 'auto';
-      stickyBar.setAttribute('aria-hidden', heroVisible ? 'true' : 'false');
-    }
+  <!-- HOW IT WORKS -->
+  <section class="how-it-works">
+    <div class="container">
+      <span class="section-label">How it works</span>
+      <h2>Three steps. One afternoon. Memory unlocked.</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-line"></div>
+          <div class="step-content">
+            <h3>Set it up — takes one afternoon.</h3>
+            <p>Follow the guide to turn on the right iOS 27 Siri settings and build your first memory structure. No tech degree needed. If you can send a voice text, you can do this.</p>
+            <div class="step-example">"Hey Siri, remember that…" ← that's it. That's the whole system.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-line"></div>
+          <div class="step-content">
+            <h3>Say it out loud — hands-free, on the go.</h3>
+            <p>At school pickup, in the car, cooking dinner — just say it. Siri captures it. You move on. No stopping, no typing, no "I'll add that later" (that you never do).</p>
+            <div class="step-example">"Hey Siri, remember that Jake's soccer coach is Mike and his number is 555-0142."</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-line"></div>
+          <div class="step-content">
+            <h3>Ask later — get the answer instantly.</h3>
+            <p>Need it back? Just ask. No hunting, no scrolling, no "where did I write that?" Just the right answer, right when you need it.</p>
+            <div class="step-example">"Hey Siri, what did I save about Jake's coach?" → Immediate answer. Every time.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    window.addEventListener('scroll', updateStickyBar, { passive: true });
-    updateStickyBar();
-  </script>
+  <!-- SECOND PROOF -->
+  <section class="proof-2">
+    <div class="container">
+      <span class="stars">★★★★★</span>
+      <h2>More moms who finally feel organized:</h2>
+      <div class="proof-cards-2">
+        <div class="proof-card-2">
+          <div class="quote">"</div>
+          <p>[PLACEHOLDER — Real testimonial here. Something like: I thought I'd set this up and forget about it. Instead I've used it every single day for six weeks. My pediatrician is probably confused why I suddenly have perfect recall.]</p>
+          <div class="name">— [PLACEHOLDER — First name, mom of 2]</div>
+        </div>
+        <div class="proof-card-2">
+          <div class="quote">"</div>
+          <p>[PLACEHOLDER — Real testimonial here. Something like: Worth it at double the price. I saved my dad's new cardiologist's information on the way home from his appointment and I would have definitely lost that piece of paper.]</p>
+          <div class="name">— [PLACEHOLDER — First name, city]</div>
+        </div>
+        <div class="proof-card-2">
+          <div class="quote">"</div>
+          <p>[PLACEHOLDER — Real testimonial here. Something like: My kids think I'm a genius now. Little do they know I just asked Siri before I walked in the door.]</p>
+          <div class="name">— [PLACEHOLDER — First name, mom of 3]</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- UPSELL -->
+  <section class="upsell">
+    <div class="container">
+      <div class="upsell-badge">🚀 Optional Add-On</div>
+      <h2>Want it before<br>everyone else?</h2>
+      <p>Add the <strong>Early Access Beta Prep Pack</strong> — and be the first to use the next-gen Siri memory features the moment they go live.</p>
+      <ul class="upsell-list">
+        <li><span>🔓</span><span>How to safely join the iOS beta — no bricked phone, promise</span></li>
+        <li><span>📋</span><span>What's coming in the next Siri update (and how to prep now)</span></li>
+        <li><span>⚡</span><span>First-to-know access to every Remember update &amp; bonus</span></li>
+        <li><span>💬</span><span>Private early-access community (moms only, obviously)</span></li>
+      </ul>
+      <div class="upsell-price"><small>$34</small> $17</div>
+      <a href="#checkout-upsell" class="cta-btn-dark">
+        Yes, add the Beta Pack — $17 →
+      </a>
+      <p style="margin-top:14px; font-size:13px; color:rgba(255,255,255,0.7); font-weight:600;">No pressure. The main guide stands completely on its own.</p>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq">
+    <div class="container">
+      <span class="section-label">Good questions</span>
+      <h2>Okay but… let me ask.</h2>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>Do I need a specific iPhone or iOS version?</summary>
+          <p>You need an iPhone running iOS 27 or later. The memory features this guide is built around were introduced in iOS 27 — if you're on an earlier version, the guide still has useful general Siri tips, but the core memory vault features require iOS 27.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Is this complicated to set up?</summary>
+          <p>Nope. If you can send a voice text or talk to Siri to set a timer, you can set this up. The guide is written for real humans — not tech people. Most moms finish the setup in under an hour.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Is my information private? What does Siri do with it?</summary>
+          <p>Great question. The guide walks you through exactly how Siri handles your data and which privacy settings to use. The short version: your memories stay on your device and in your iCloud — Apple isn't training AI on your personal notes.</p>
+        </details>
+        <details class="faq-item">
+          <summary>What format is this? How do I get it?</summary>
+          <p>It's a digital guide — PDF format with clear instructions, screenshots, and your cheat sheet printable. You get instant download access the moment you purchase. No waiting, no shipping, no app to download.</p>
+        </details>
+        <details class="faq-item">
+          <summary>What if I try it and it doesn't work for me?</summary>
+          <p>Then you get your money back — no questions asked. See the guarantee below. Seriously, just email and you're done. We're not going to make you write an essay about why you didn't like it.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- GUARANTEE -->
+  <section class="guarantee">
+    <div class="container">
+      <div class="guarantee-badge">🛡️</div>
+      <h2>30-Day "Just Works" Guarantee.</h2>
+      <p>Try Remember for 30 days. If you don't feel like you have a genuinely better memory system — or if it just doesn't click for you for any reason — <strong>email us and get every dollar back.</strong> No hoops. No questions. No hard feelings. We mean it.</p>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="final-cta" id="checkout">
+    <div class="container">
+      <h2>Your brain is full.<br><em>Siri's got this.</em></h2>
+      <div class="final-price">
+        $37
+        <small>One-time · Instant download · No subscription</small>
+      </div>
+      <a href="#checkout" class="cta-btn">
+        Get Remember Now →
+        <small>+ 30-day money-back guarantee</small>
+      </a>
+      <p class="urgency">⚡ Instant access · Download in 60 seconds</p>
+      <div class="footer-note">
+        © 2026 Remember. All rights reserved.<br>
+        <a href="#">Privacy Policy</a> · <a href="#">Terms</a> · Questions? <a href="mailto:hello@remember.app">hello@remember.app</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- STICKY BAR -->
+  <div class="sticky-bar">
+    <div class="sticky-bar-text">
+      Remember — $37 one-time
+      <small>Outsource your mom-brain. Finally.</small>
+    </div>
+    <a href="#checkout" class="sticky-bar-btn">Get It →</a>
+  </div>
 
 </body>
 </html>
